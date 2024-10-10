@@ -1,0 +1,1 @@
+int gen_random_value(int max_value);

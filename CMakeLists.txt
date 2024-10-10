@@ -5,9 +5,6 @@ project(03.homework)
 add_executable(
 	main
 	main.cpp
+	random_value.cpp
+	random_value.h
 )
-
-# add_executable(
-	# random_value
-	# random_value.cpp
-# )

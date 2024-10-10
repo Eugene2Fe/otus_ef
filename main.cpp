@@ -1,11 +1,13 @@
 #include <iostream>
 #include <string>
+#include "random_value.h"
 
 int main() {
 
     bool win = false;
     std::string gamer_name;
-	const int target_value = 5;
+	// const int target_value = 5;
+	const int target_value = gen_random_value(10);
 	int current_value = 0;
 
 	std::cout << "Hi, enter you nickname:" << std::endl;
