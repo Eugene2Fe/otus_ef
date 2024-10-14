@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "random_value.h"
+#include "high_scores.h"
 
 int main() {
 
@@ -9,9 +10,9 @@ int main() {
 	// const int target_value = 5;
 	const int target_value = gen_random_value(10);
 	int current_value = 0;
+    int attempts_count = 1;
 
-	std::cout << "Hi, enter you nickname:" << std::endl;
-    std::cin >> gamer_name;
+    gamer_name = ask_name(gamer_name);
 	std::cout << "Welcome: " << gamer_name << std::endl;
 
     while (!(win))
@@ -23,13 +24,16 @@ int main() {
 
 	if (current_value > target_value) {
 		std::cout << "less than " << current_value << std::endl;
+        attempts_count++;
 	}
 	else if (current_value < target_value) {
 		std::cout << "greater than " << current_value << std::endl;
+        attempts_count++;
 	}
 	else {
 		std::cout << "you win!" << std::endl;
         win = true;
+        std::cout << "Count of attemps:" << attempts_count << std::endl;
 		break;
 	}
 
