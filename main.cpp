@@ -5,7 +5,19 @@
 
 int main(int argc, char** argv) {
 
+    const std::string high_scores_filename = "../high_scores.txt";
     int max_random_val = 10;
+
+    if(argv[1] and !(argv[2])){
+        std::string arg1_value{argv[1]};
+        if (arg1_value == "--table" and (!(argv[2]))) {
+            print_top_results(high_scores_filename);
+            return -1;
+            }
+        }
+        else{
+                std::cout << "Wrong usage! The argument '--max 10' requires some INT value! \n Using default val" << std::endl;
+        }
 
     if(argv[1] and argv[2] and !(argv[3])){
         std::string arg1_value{argv[1]};
@@ -34,7 +46,6 @@ int main(int argc, char** argv) {
 	int current_value = 0;
     int attempts_count = 1;
 
-    const std::string high_scores_filename = "../high_scores.txt";
 
     print_top_results(high_scores_filename);
     gamer_name = ask_name(gamer_name);
