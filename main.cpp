@@ -7,15 +7,20 @@ int main(int argc, char** argv) {
 
     int max_random_val = 10;
 
-    std::string arg1_value{argv[1]};
-    if (arg1_value == "--max") {
-        int max_random_val = 0;
-        if (argc < 3) {
-            std::cout << "Wrong usage! The argument '-max' requires some value!" << std::endl;
-            return -1;
+    if(argv[1] and argv[2] and !(argv[3])){
+        std::string arg1_value{argv[1]};
+        if (arg1_value == "--max" and (isdigit(atoi(argv[2])))) {
+            int max_random_val = 0;
+            if (argc < 3) {
+                std::cout << "Wrong usage! The argument '--max 10' requires some INT value! \n Using default val" << std::endl;
+                return -1;
+            }
+            max_random_val = std::atoi(argv[2]);
+            std::cout << "Max value bay be before 0 and " << argv[2] << std::endl;
         }
-        max_random_val = std::atoi(argv[2]);
-        std::cout << "Max value bay be before 0 and " << argv[2] << std::endl;
+        else{
+                std::cout << "Wrong usage! The argument '--max 10' requires some INT value! \n Using default val" << std::endl;
+        }
     }
     else
     {
