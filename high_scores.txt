@@ -1,0 +1,6 @@
+Alex 4
+Max 1
+Ivan 8
+Lena 6
+Gena 3
+Petr 2

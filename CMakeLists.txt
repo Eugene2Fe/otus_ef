@@ -7,4 +7,6 @@ add_executable(
 	main.cpp
 	random_value.cpp
 	random_value.h
+	high_scores.cpp
+	high_scores.h
 )

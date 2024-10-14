@@ -11,7 +11,9 @@ int main() {
 	const int target_value = gen_random_value(10);
 	int current_value = 0;
     int attempts_count = 1;
+    const std::string high_scores_filename = "../high_scores.txt";
 
+    print_top_results(high_scores_filename);
     gamer_name = ask_name(gamer_name);
 	std::cout << "Welcome: " << gamer_name << std::endl;
 
@@ -38,6 +40,8 @@ int main() {
 	}
 
     }
+
+    save_top_results(gamer_name, attempts_count, high_scores_filename);
 
 	return 0;
 }

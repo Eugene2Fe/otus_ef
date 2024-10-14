@@ -11,43 +11,28 @@ std::string ask_name(std::string user_name) {
 	return user_name;
 }
 
-int vvv() {
 
-	const std::string high_scores_filename = "high_scores.txt";
-
-
-
-	// Get the last high score
-	std::cout << "Enter your high score:" << std::endl;
-	int attempts_count = 0;
-	std::cin >> attempts_count;
-	if (std::cin.fail()) {
-		std::cout << "Bad value!" << std::endl;
-		return -1;
-	}
-
-	// Write new high score to the records table
-	{
-		// We should open the output file in the append mode - we don't want
-		// to erase previous results.
+void save_top_results(std::string user_name, int attempts_count, std::string high_scores_filename){
 		std::ofstream out_file{high_scores_filename, std::ios_base::app};
+
 		if (!out_file.is_open()) {
 			std::cout << "Failed to open file for write: " << high_scores_filename << "!" << std::endl;
-			return -1;
+			// return -1;
 		}
 
-		// Append new results to the table:
-		// out_file << user_name << ' ';
-		out_file << attempts_count;
-		out_file << std::endl;
-	} // end of score here just to mark end of the logic block of code
+		std::cout << "-> Saved results into file: " << high_scores_filename << std::endl;
 
-	// Read the high score file and print all results
+		out_file << user_name << ' ' << attempts_count << std::endl;
+		// out_file.close();
+}
+
+void print_top_results(std::string high_scores_filename)
 	{
 		std::ifstream in_file{high_scores_filename};
+		// in_file.open(high_scores_filename); // окрываем файл для чтения
 		if (!in_file.is_open()) {
 			std::cout << "Failed to open file for read: " << high_scores_filename << "!" << std::endl;
-			return -1;
+			// return -1;
 		}
 
 		std::cout << "High scores table:" << std::endl;
@@ -69,7 +54,5 @@ int vvv() {
 			// Print the information to the screen
 			std::cout << username << '\t' << high_score << std::endl;
 		}
+		std::cout << std::endl;
 	}
-
-	return 0;
-}
