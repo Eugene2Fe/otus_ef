@@ -4,9 +4,15 @@
 #include "Velocity.hpp"
 
 class Ball {
+private:
+  Point center_;
+  Velocity velocity_;
+  double red_, green_, blue_;
+  double radius_;
+  bool isCollidable_;
 public:
     Ball(const Point& center, const Velocity& velocity,
-         uint8_t red, uint8_t green, uint8_t blue,
+         double red, double green, double blue,
          double radius, bool isCollidable)
         : center_(center),
           velocity_(velocity),
@@ -23,11 +29,7 @@ public:
     Point getCenter() const;
     double getRadius() const;
     double getMass() const;
+    bool isCollidable() const;
 
-private:
-    Point center_;
-    Velocity velocity_;
-    int red_, green_, blue_;
-    double radius_;
-    bool isCollidable_;
+
 };
