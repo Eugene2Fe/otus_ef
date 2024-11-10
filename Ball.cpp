@@ -10,8 +10,7 @@ Velocity Ball::getVelocity() const {
 }
 
 void Ball::draw(Painter& painter) const {
-    painter.draw(center_, radius_, Color(0,0,1));
-    // painter.draw(center_, radius_, Color(1,1,0));
+    painter.draw(center_, radius_, Color(red_, green_, blue_));
 }
 
 void Ball::setCenter(const Point& center) {
@@ -28,4 +27,8 @@ double Ball::getRadius() const {
 
 double Ball::getMass() const {
     return 4.0 / 3.0 * M_PI * std::pow(radius_, 3);
+}
+
+bool Ball::isCollidable() const {
+    return isCollidable_;
 }

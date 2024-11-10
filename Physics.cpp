@@ -22,7 +22,11 @@ void Physics::update(std::vector<Ball>& balls, const size_t ticks) const {
 
 void Physics::collideBalls(std::vector<Ball>& balls) const {
     for (auto a = balls.begin(); a != balls.end(); ++a) {
+        if (!a->isCollidable()) continue;  // Пропускать шарики, которые НЕ должны сталкиваться
         for (auto b = std::next(a); b != balls.end(); ++b) {
+            if (!b->isCollidable()) continue;  // Пропускать шарики, которые НЕ должны сталкиваться
+
+            // Рассчитываем расстояние и проверяем столкновение
             const double distanceBetweenCenters2 =
                 distance2(a->getCenter(), b->getCenter());
             const double collisionDistance = a->getRadius() + b->getRadius();
