@@ -44,21 +44,23 @@ void Physics::collideWithBox(std::vector<Ball>& balls) const {
     for (Ball& ball : balls) {
         const Point p = ball.getCenter();
         const double r = ball.getRadius();
-        // const bool isColbl = ball.isCollidable();
+        const bool c = ball.isCollidable();
         // определяет, находится ли v в диапазоне (lo, hi) (не включая границы)
         auto isOutOfRange = [](double v, double lo, double hi) {
             return v < lo || v > hi;
         };
-
-        // if (isOutOfRange(p.x, topLeft.x + r, bottomRight.x - r)) {
-        //     Point vector = ball.getVelocity().vector();
-        //     vector.x = -vector.x;
-        //     ball.setVelocity(vector);
-        // } else if (isOutOfRange(p.y, topLeft.y + r, bottomRight.y - r)) {
-        //     Point vector = ball.getVelocity().vector();
-        //     vector.y = -vector.y;
-        //     ball.setVelocity(vector);
-        // }
+        if (c) {
+        if (isOutOfRange(p.x, topLeft.x + r, bottomRight.x - r)) {
+            Point vector = ball.getVelocity().vector();
+            vector.x = -vector.x;
+            ball.setVelocity(vector);
+        }
+        if (isOutOfRange(p.y, topLeft.y + r, bottomRight.y - r)) {
+            Point vector = ball.getVelocity().vector();
+            vector.y = -vector.y;
+            ball.setVelocity(vector);
+        }
+        }
     }
 }
 
@@ -81,22 +83,10 @@ void Physics::processCollision(Ball& a, Ball& b, double distanceBetweenCenters2)
     const Point bV = b.getVelocity().vector();
 
     // коэффициент p учитывает скорость обоих мячей
-    const double p = 2 * (dot(aV, normal) - dot(bV, normal)) / (a.getMass() + b.getMass());
+    const double p =
+        2 * (dot(aV, normal) - dot(bV, normal)) / (a.getMass() + b.getMass());
 
-    // Новый вектор скорости для мяча a и мяча b
-    Point AV = aV - normal * p * a.getMass();
-    Point BV = bV + normal * p * b.getMass();
-
-//     // задаем новые скорости мячей после столкновения
-//     a.setVelocity(Velocity(aV - normal * p * a.getMass()));
-//     b.setVelocity(Velocity(bV + normal * p * b.getMass()));
-
-    // Теперь преобразуем `newAV` и `newBV` в полярные координаты
-    double absA = std::sqrt(AV.x * AV.x + AV.y * AV.y);
-    double angleA = std::atan2(AV.y, AV.x);
-    double absB = std::sqrt(BV.x * BV.x + BV.y * BV.y);
-    double angleB = std::atan2(BV.y, BV.x);
-
-    a.setVelocity(Velocity(absA, angleA));
-    b.setVelocity(Velocity(absB, angleB));
+    // задаем новые скорости мячей после столкновения
+    a.setVelocity(Velocity(aV - normal * p * a.getMass()));
+    b.setVelocity(Velocity(bV + normal * p * b.getMass()));
 }
