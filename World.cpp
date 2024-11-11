@@ -32,51 +32,21 @@ World::World(const std::string& worldFilePath) {
      * как и (red, green, blue). Опять же, можно упростить
      * этот код, научившись читать сразу Point, Color...
      */
-    double x;
-    double y;
-    double vx;
-    double vy;
-    double radius;
-
-    double red;
-    double green;
-    double blue;
+    double x, y, vx, vy, radius, red, green, blue;
 
     bool isCollidable;
 
-    // Здесь не хватает обработки ошибок, но на текущем
-    // уровне прохождения курса нас это устраивает
     while (stream.peek(), stream.good()) {
-        // Читаем координаты центра шара (x, y) и вектор
-        // его скорости (vx, vy)
+        // Читаем координаты центра шара (x, y) и вектор его скорости (vx, vy)
         stream >> x >> y >> vx >> vy;
-        // Читаем три составляющие цвета шара
         stream >> red >> green >> blue;
-        // Читаем радиус шара
         stream >> radius;
-        // Читаем свойство шара isCollidable, которое
-        // указывает, требуется ли обрабатывать пересечение
-        // шаров как столкновение. Если true - требуется.
-        // В базовой части задания этот параметр
         stream >> std::boolalpha >> isCollidable;
 
-        // TODO: место для доработки.
-        // Здесь не хватает самого главного - создания
-        // объекта класса Ball со свойствами, прочитанными
-        // выше, и его помещения в контейнер balls
-
-        // После того как мы каким-то образом
-        // сконструируем объект Ball ball;
-        // добавьте его в конец контейнера вызовом
-        // balls.push_back(ball);
-
-
-        // Создаем объект Ball, используя конструктор
         Point center(x, y);               // Создаем точку центра
-        Velocity velocity(vx, vy);        // Создаем вектор скорости
+        // Velocity velocity(vx, vy);        // Создаем вектор скорости
+        Velocity velocity(Point (vx, vy));        // Создаем вектор скорости
         Ball ball(center, velocity, red, green, blue, radius, isCollidable);
-
-        // Добавляем созданный объект Ball в контейнер
         balls.push_back(ball);
 
 
@@ -85,8 +55,7 @@ World::World(const std::string& worldFilePath) {
 
 /// @brief Отображает состояние мира
 void World::show(Painter& painter) const {
-    // Рисуем белый прямоугольник, отображающий границу
-    // мира
+    // Рисуем белый прямоугольник, отображающий границу мира
     painter.draw(topLeft, bottomRight, Color(1, 1, 1));
 
     // Вызываем отрисовку каждого шара
