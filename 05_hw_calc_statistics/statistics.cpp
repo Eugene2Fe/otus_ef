@@ -1,5 +1,6 @@
 #include <iostream>
 #include <limits>
+#include <cmath>
 
 class IStatistics {
 public:
@@ -78,13 +79,43 @@ private:
     size_t m_counter;
 };
 
+// среднее квадратичное
+class SredKvdr : public IStatistics {
+public:
+    SredKvdr() : m_summa{0.0}, m_summa_squares{0.0}, m_count{0} {}
+
+    void update(double next) override {
+        m_summa += next;
+        m_summa_squares += next * next;
+        ++m_count;
+    }
+
+    double eval() const override {
+        if (m_count < 2) {
+            return 0.0f;
+        }
+        double mean = m_summa / m_count; // среднее арифметическое
+        return std::sqrt((m_summa_squares - m_count * mean * mean) / (m_count - 1));
+    }
+
+    const char* name() const override {
+        return "sr_kvd";
+    }
+
+private:
+    double m_summa;
+    double m_summa_squares;
+    size_t m_count;
+};
+
 int main() {
 
-	const size_t statistics_count = 3;
+	const size_t statistics_count = 4;
     IStatistics* statistics[statistics_count] = {
         new Min{},
         new Max{},
-        new Mean{}
+        new Mean{},
+		new SredKvdr{}
     };
 
 	statistics[0] = new Min{};
