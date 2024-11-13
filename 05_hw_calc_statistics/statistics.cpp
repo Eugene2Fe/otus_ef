@@ -57,8 +57,11 @@ private:
 
 int main() {
 
-	const size_t statistics_count = 1;
-	IStatistics *statistics[statistics_count];
+	const size_t statistics_count = 2;
+    IStatistics* statistics[statistics_count] = {
+        new Min{},
+        new Max{}
+    };
 
 	statistics[0] = new Min{};
 
