@@ -55,12 +55,36 @@ private:
     double m_max;
 };
 
+// среднее арифметическое
+class Mean : public IStatistics {
+public:
+    Mean() : m_summ{0.0f}, m_counter{0} {}
+
+    void update(double next) override {
+        m_summ += next;
+        ++m_counter;
+    }
+
+    double eval() const override {
+        return m_counter > 0 ? m_summ / m_counter : 0.0f;
+    }
+
+    const char* name() const override {
+        return "mean";
+    }
+
+private:
+    double m_summ;
+    size_t m_counter;
+};
+
 int main() {
 
-	const size_t statistics_count = 2;
+	const size_t statistics_count = 3;
     IStatistics* statistics[statistics_count] = {
         new Min{},
-        new Max{}
+        new Max{},
+        new Mean{}
     };
 
 	statistics[0] = new Min{};
