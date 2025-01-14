@@ -3,14 +3,8 @@ cmake_minimum_required(VERSION 3.10)
 project(ContainerTests)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Добавляем GTest
-find_package(GTest REQUIRED)
-
-# Инклудим исходники
-include_directories(${GTEST_INCLUDE_DIRS})
-include_directories(${PROJECT_SOURCE_DIR}/src) 
-# без этого тоже не билдилось, хотя следующей командой были указаны пути к сорцам
 
 set(SOURCES
     src/seq_container.cpp
@@ -20,8 +14,26 @@ set(SOURCES
     test/test_main.cpp
 )
 
-# Выбираем имя исполняемому файлу для тестов
+
+# Загрузка и настройка Google Tests
+include(FetchContent)
+
+FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    GIT_TAG v1.15.2
+)
+
+# Указываем, что GTest собирается вместе с проектом
+set(BUILD_GMOCK OFF) # Выключаем сборку GMock (если не нужен)
+set(INSTALL_GTEST OFF) # Выключаем установку GTest
+FetchContent_MakeAvailable(googletest)
+
+# Генерим исполняемый файл для тестов
 add_executable(ContainerTests ${SOURCES})
 
-# Линковка с гугл тест
-target_link_libraries(ContainerTests ${GTEST_LIBRARIES} pthread)
+# Линковка с GTest и потоками
+target_link_libraries(ContainerTests gtest gtest_main pthread)
+
+# Указпли путь к инклудам
+target_include_directories(ContainerTests PUBLIC ${PROJECT_SOURCE_DIR}/src)
