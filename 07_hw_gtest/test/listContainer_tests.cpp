@@ -83,7 +83,7 @@ TEST(ListContainer, EraseFromMiddle) {
 TEST(ListContainer, OutOfRangeInsert) {
 
     ListContainer listContainer;
- and Assert
+
     EXPECT_THROW(listContainer.insert(1, 5), std::out_of_range);
 }
 
@@ -92,6 +92,6 @@ TEST(ListContainer, OutOfRangeErase) {
     ListContainer listContainer;
     listContainer.push_back(888);
     listContainer.push_back(999);
- and Assert
+
     EXPECT_THROW(listContainer.erase(2), std::out_of_range);
 }
