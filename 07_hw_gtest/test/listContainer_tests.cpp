@@ -22,6 +22,8 @@ TEST(ListContainer, PushBack) {
     listContainer.push_back(222);
 
     EXPECT_EQ(listContainer.size(), 2);  // Запушбечили 2 элемента, значит ожидаем будет размер +2
+    EXPECT_EQ(listContainer.get(0), 111); // Конкретная проверка элемента на позиции
+    EXPECT_EQ(listContainer.get(1), 222);
 }
 
 TEST(ListContainer, InsertAtBeginning) {

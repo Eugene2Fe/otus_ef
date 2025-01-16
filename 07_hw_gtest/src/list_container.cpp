@@ -125,4 +125,17 @@ public:
         }
         std::cout << std::endl;
     }
+
+    // метод доступа по индексу
+    int get(size_t index) const {
+        if (index >= counter) {
+            throw std::out_of_range("Index out of bounds");
+        }
+
+        Node* current = head;
+        for (size_t i = 0; i < index; ++i) {
+            current = current->next;
+        }
+        return current->value;
+    }
 };
