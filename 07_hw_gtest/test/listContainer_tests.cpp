@@ -33,8 +33,8 @@ TEST(ListContainer, InsertAtBeginning) {
 
     listContainer.insert(0, 333); // Вставляем на нулевую(первую позицию)
 
+    EXPECT_EQ(listContainer.get(0), 333);
     EXPECT_EQ(listContainer.size(), 2); // ожидаем что вставилось 2 элемента в контейнере
-    // EXPECT_EQ(listContainer[0], 333); // todo // контейнер не поддерживает вывод определенного элемента
 }
 
 TEST(ListContainer, InsertAtMiddle) {
@@ -46,6 +46,7 @@ TEST(ListContainer, InsertAtMiddle) {
     listContainer.insert(1, 666);
 
     EXPECT_EQ(listContainer.size(), 3);
+    EXPECT_EQ(listContainer.get(1), 666);
 }
 
 TEST(ListContainer, EraseFromEnd) {
@@ -57,6 +58,7 @@ TEST(ListContainer, EraseFromEnd) {
     listContainer.erase(1);
 
     EXPECT_EQ(listContainer.size(), 1);
+    EXPECT_EQ(listContainer.get(0), 777);
 }
 
 TEST(ListContainer, EraseFromBeginning) {
@@ -68,6 +70,7 @@ TEST(ListContainer, EraseFromBeginning) {
     listContainer.erase(0);
 
     EXPECT_EQ(listContainer.size(), 1);
+    EXPECT_EQ(listContainer.get(0), 888);
 }
 
 TEST(ListContainer, EraseFromMiddle) {
@@ -80,6 +83,8 @@ TEST(ListContainer, EraseFromMiddle) {
     listContainer.erase(1);
 
     EXPECT_EQ(listContainer.size(), 2);
+    EXPECT_EQ(listContainer.get(0), 777);
+    EXPECT_EQ(listContainer.get(1), 999);
 }
 
 TEST(ListContainer, OutOfRangeInsert) {
