@@ -19,7 +19,18 @@ private:
     }
 
 public:
-    SeqContainer() : myData(nullptr), myDataCapacity(0), counter(0) {} // default Constr
+    SeqContainer() : myData(nullptr), myDataCapacity(0), counter(0) {
+        try {
+            myData = new int[1]; // Выделяем на тест памяти под элемент
+            if (!myData) {
+                throw std::runtime_error("Failed to allocate memory for SeqContainer!");
+            }
+            myDataCapacity = 1; // Успешно выделили память
+        } catch (const std::exception& e) {
+            std::cerr << "Exception in SeqContainer constructor: " << e.what() << std::endl;
+            throw;
+        }
+    }
 
     ~SeqContainer()   { delete[] myData; } // Destr for make free memory
 

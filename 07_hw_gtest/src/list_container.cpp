@@ -17,8 +17,19 @@ private:
     size_t counter;     // Количество элементов в списке
 
 public:
-    // default Constr
-    ListContainer() : head(nullptr), tail(nullptr), counter(0) {}
+    ListContainer() : head(nullptr), tail(nullptr), counter(0) {
+        try {
+            // выделяем памяти тестово для тестового узла
+            Node* testNode = new Node(0);
+            if (!testNode) {
+                throw std::runtime_error("Failed to allocate memory for ListContainer!");
+            }
+            delete testNode;
+        } catch (const std::exception& e) {
+            std::cerr << "Exception in ListContainer constructor: " << e.what() << std::endl;
+            throw;
+        }
+    }
 
     // Destr for make free memory
     ~ListContainer() {
