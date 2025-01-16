@@ -94,3 +94,15 @@ TEST(SeqContainer, AccessOutOfRange) {
 
     EXPECT_THROW(seqContainer[1], std::out_of_range);
 }
+
+TEST(SeqContainer, Size) {
+    SeqContainer seqContainer;
+
+    EXPECT_EQ(seqContainer.size(), 0);
+
+    seqContainer.push_back(11);
+    EXPECT_EQ(seqContainer.size(), 1);
+
+    seqContainer.push_back(22);
+    EXPECT_EQ(seqContainer.size(), 2);
+}

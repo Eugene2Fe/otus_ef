@@ -97,3 +97,15 @@ TEST(ListContainer, OutOfRangeErase) {
 
     EXPECT_THROW(listContainer.erase(2), std::out_of_range);
 }
+
+TEST(ListContainer, Size) {
+    ListContainer listContainer;
+
+    EXPECT_EQ(listContainer.size(), 0);
+
+    listContainer.push_back(111);
+    EXPECT_EQ(listContainer.size(), 1);
+
+    listContainer.push_back(222);
+    EXPECT_EQ(listContainer.size(), 2);
+}
