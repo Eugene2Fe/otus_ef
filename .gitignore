@@ -1,9 +1,11 @@
 # Dirs
 /build
 /help
+/theory
 /.vscode
 /06_hw_containers
 /07_hw_gtest/build
+/crc32_crack/build
 
 # Prerequisites
 *.d

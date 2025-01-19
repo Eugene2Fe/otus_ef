@@ -1,33 +1,35 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
-project(08.Classes)
+project(otus-cpp CXX)
 
-add_executable(01_class 01_class.cpp)
-set_target_properties(01_class PROPERTIES
-	CXX_STANDARD 17
-	CXX_STANDARD_REQUIRED ON
-)
+find_package(Threads REQUIRED)
 
-add_executable(02_methods 02_methods.cpp)
-set_target_properties(02_methods PROPERTIES
-	CXX_STANDARD 17
-	CXX_STANDARD_REQUIRED ON
-)
+file(GLOB SRC_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
-add_executable(03_constructor 03_constructor.cpp)
-set_target_properties(03_constructor PROPERTIES
-	CXX_STANDARD 17
-	CXX_STANDARD_REQUIRED ON
-)
+foreach(src_file ${SRC_FILES})
+    get_filename_component(target ${src_file} NAME_WLE)
+    add_executable(${target} ${src_file})
+    list(APPEND TARGETS ${target})
+    message("target added: ${target}")
+endforeach(src_file ${SRC_FILES})
 
-add_executable(04_destructor 04_destructor.cpp)
-set_target_properties(04_destructor PROPERTIES
-	CXX_STANDARD 17
-	CXX_STANDARD_REQUIRED ON
-)
-
-add_executable(05_static 05_static.cpp)
-set_target_properties(05_static PROPERTIES
-	CXX_STANDARD 17
-	CXX_STANDARD_REQUIRED ON
-)
+foreach(target ${TARGETS})
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR
+        CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        target_compile_options(${target} PRIVATE 
+            -g
+            -Wall
+            -Wextra
+            -Werror
+            -pedantic
+        )
+        target_link_libraries(${target} PUBLIC Threads::Threads)
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        target_compile_options(${target} PRIVATE
+            /EHsc
+            /W4
+            /WX
+        )
+    endif()
+    target_compile_features(${target} PUBLIC cxx_std_17)
+endforeach(target IN ${TARGETS})
