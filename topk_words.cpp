@@ -8,6 +8,8 @@
 #include <map>
 #include <vector>
 #include <chrono>
+#include <thread>  // 
+#include <mutex>   // 
 
 const size_t TOPK = 10;
 
@@ -15,28 +17,57 @@ using Counter = std::map<std::string, std::size_t>;
 
 std::string tolower(const std::string &str);
 
-void count_words(std::istream& stream, Counter&);
+void count_words(std::istream& stream, Counter& counter);
 
 void print_topk(std::ostream& stream, const Counter&, const size_t k);
 
+void merge_counters(Counter& global_counter, const Counter& local_counter, std::mutex& mtx); // will merge in the end
+
 int main(int argc, char *argv[]) {
     if (argc < 2) {
-        std::cerr << "Usage: topk_words [FILES...]\n";
+        std::cerr << "Usage: topk_words [FILES...] [--single-thread | --multi-thread]\n";
         return EXIT_FAILURE;
     }
 
+    // One or multithreads run program? Parse args
+    bool will_use_multithreading = false;
+    if (argc > 2 && std::string(argv[argc - 1]) == "--multi-thread") {
+        will_use_multithreading = true;
+    } 
+
     auto start = std::chrono::high_resolution_clock::now();
-    Counter freq_dict;
-    for (int i = 1; i < argc; ++i) {
-        std::ifstream input{argv[i]};
-        if (!input.is_open()) {
-            std::cerr << "Failed to open file " << argv[i] << '\n';
-            return EXIT_FAILURE;
+    Counter global_freq_dict;
+    std::mutex mtx; 
+    if (will_use_multithreading) {
+        std::vector<std::thread> threads;
+        for (int i = 1; i < argc - (will_use_multithreading ? 1 : 0); ++i) {
+            threads.emplace_back([i, &mtx, &global_freq_dict, argv]() {
+                std::ifstream input{argv[i]};
+                if (!input.is_open()) {
+                    std::cerr << "Failed to open file " << argv[i] << '\n';
+                    return;
+                }
+
+                Counter local_counter;
+                count_words(input, local_counter);
+                merge_counters(global_freq_dict, local_counter, mtx);
+            });
         }
-        count_words(input, freq_dict);
+        for (auto& t : threads) { // wait all threads
+            t.join();
+        }
+    } else { // 1 thread:
+        for (int i = 1; i < argc - (will_use_multithreading ? 1 : 0); ++i) {
+            std::ifstream input{argv[i]};
+            if (!input.is_open()) {
+                std::cerr << "Failed to open file " << argv[i] << '\n';
+                return EXIT_FAILURE;
+            }
+            count_words(input, global_freq_dict);
+        }
     }
 
-    print_topk(std::cout, freq_dict, TOPK);
+    print_topk(std::cout, global_freq_dict, TOPK);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     std::cout << "Elapsed time is " << elapsed_ms.count() << " us\n";
@@ -75,4 +106,11 @@ void print_topk(std::ostream& stream, const Counter& counter, const size_t k) {
             stream << std::setw(4) << pair->second << " " << pair->first
                       << '\n';
         });
+}
+
+void merge_counters(Counter& global_counter, const Counter& local_counter, std::mutex& mtx) {
+    std::lock_guard<std::mutex> lock(mtx);  // here protect access for 'global_counter'
+    for (const auto& pair : local_counter) {
+        global_counter[pair.first] += pair.second;
+    }
 }
