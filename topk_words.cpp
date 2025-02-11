@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
     std::mutex mtx; 
     if (will_use_multithreading) {
         std::vector<std::thread> threads;
-        for (int i = 1; i < argc - (will_use_multithreading ? 1 : 0); ++i) {
+        for (int i = 1; i < argc; ++i) {
             threads.emplace_back([i, &mtx, &global_freq_dict, argv]() {
                 std::ifstream input{argv[i]};
                 if (!input.is_open()) {
