@@ -33,7 +33,10 @@ int main(int argc, char *argv[]) {
     bool will_use_multithreading = false;
     if (argc > 2 && std::string(argv[argc - 1]) == "--multi-thread") {
         will_use_multithreading = true;
-    } 
+        argc--;
+    } else if (argc > 2 && std::string(argv[argc - 1]) == "--single-thread") {
+        argc--;
+    }
 
     auto start = std::chrono::high_resolution_clock::now();
     Counter global_freq_dict;
@@ -57,7 +60,7 @@ int main(int argc, char *argv[]) {
             t.join();
         }
     } else { // 1 thread:
-        for (int i = 1; i < argc - (will_use_multithreading ? 1 : 0); ++i) {
+        for (int i = 1; i < argc; ++i) {
             std::ifstream input{argv[i]};
             if (!input.is_open()) {
                 std::cerr << "Failed to open file " << argv[i] << '\n';
