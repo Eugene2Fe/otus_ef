@@ -22,7 +22,7 @@ eugenefe@mac build % ./topk_words ../book.txt ../book.txt ../book.txt ../book.tx
 3745 was
 2615 that
 Elapsed time is 380547 us
----------------------------
+-=-=-=-=-=-
 eugenefe@mac build % ./topk_words ../book.txt ../book.txt ../book.txt ../book.txt ../book.txt --multi-thread 
 11775 the
 7375 and
