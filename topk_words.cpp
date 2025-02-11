@@ -11,6 +11,8 @@
 #include <thread>  // 
 #include <mutex>   // 
 
+// #define EXIT_FAILURE -1; // WAS BAD example // THIS macro redifined -> <cstdlib> have definition == 1, not -1
+
 const size_t TOPK = 10;
 
 using Counter = std::map<std::string, std::size_t>;
