@@ -75,7 +75,7 @@ int main(int argc, char *argv[]) {
     print_topk(std::cout, global_freq_dict, TOPK);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    std::cout << "Elapsed time is " << elapsed_ms.count() << " us\n";
+    std::cout << "Elapsed time is " << elapsed_ms.count() << " us = "  << elapsed_ms.count()/1000  << " ms\n";
 }
 
 std::string tolower(const std::string &str) {
